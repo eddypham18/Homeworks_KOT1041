@@ -55,24 +55,24 @@ fun main() {
     * Varargs allow you to pass any number of arguments by separating them with commas.
     * */
 
-    fun printAll(vararg messages: String) {
-        for (m in messages) println(m)
-    }
-    printAll("Hello", "Hallo", "Salut", "Hola", "你好")
-
-    fun printAllWithPrefix(vararg messages: String, prefix: String) {
-        for (m in messages) println(prefix + m)
-    }
-    printAllWithPrefix(
-        "Hello", "Hallo", "Salut", "Hola", "你好",
-        prefix = "Greeting: "
-    )
-
-    //spread operator
-    fun log(vararg entries: String) {
-        printAll(*entries)
-    }
-    log("Hello", "Hallo", "Salut", "Hola", "你好")
+//    fun printAll(vararg messages: String) {
+//        for (m in messages) println(m)
+//    }
+//    printAll("Hello", "Hallo", "Salut", "Hola", "你好")
+//
+//    fun printAllWithPrefix(vararg messages: String, prefix: String) {
+//        for (m in messages) println(prefix + m)
+//    }
+//    printAllWithPrefix(
+//        "Hello", "Hallo", "Salut", "Hola", "你好",
+//        prefix = "Greeting: "
+//    )
+//
+//    //spread operator
+//    fun log(vararg entries: String) {
+//        printAll(*entries)
+//    }
+//    log("Hello", "Hallo", "Salut", "Hola", "你好")
 
 }
 
@@ -102,5 +102,5 @@ fun main() {
 
 class Person(val name: String) {
     val likedPeople = mutableListOf<Person>()
-    infix fun likes(other: Person) { likedPeople.add(other) }  // 6
+    infix fun likes(other: Person) { likedPeople.add(other) }
 }
