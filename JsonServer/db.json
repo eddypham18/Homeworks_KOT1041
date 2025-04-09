@@ -1,0 +1,58 @@
+{
+  "foods": [
+    {
+      "id": "2",
+      "name": "Bánh",
+      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
+      "price": "15.99 $"
+    },
+    {
+      "id": "3",
+      "name": "Burger Deluxe",
+      "avatar": "https://mediawinwin.vn/upload/images/sanpham/bao-gia-chup-mon-an-dich-vu-chup-anh-do-an-chuyen-nghiep-6.JPG",
+      "price": "8.99 $"
+    },
+    {
+      "id": "4",
+      "name": "Bánh",
+      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
+      "price": "12.99 $"
+    },
+    {
+      "id": "5",
+      "name": "Grilled Salmon",
+      "avatar": "https://mediawinwin.vn/upload/images/sanpham/bao-gia-chup-mon-an-dich-vu-chup-anh-do-an-chuyen-nghiep-6.JPG",
+      "price": "18.99 $"
+    },
+    {
+      "id": "6",
+      "name": "Bánh",
+      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
+      "price": "7.99 $"
+    },
+    {
+      "id": "7",
+      "name": "Chocolate Cake",
+      "avatar": "https://mediawinwin.vn/upload/images/sanpham/bao-gia-chup-mon-an-dich-vu-chup-anh-do-an-chuyen-nghiep-6.JPG",
+      "price": "5.99 $"
+    },
+    {
+      "id": "8",
+      "name": "Bánh",
+      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
+      "price": "9.99 $"
+    },
+    {
+      "id": "9",
+      "name": "Ramen Bowl",
+      "avatar": "https://mediawinwin.vn/upload/images/sanpham/bao-gia-chup-mon-an-dich-vu-chup-anh-do-an-chuyen-nghiep-6.JPG",
+      "price": "11.99 $"
+    },
+    {
+      "id": "10",
+      "name": "Bánh",
+      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
+      "price": "6.99 $"
+    }
+  ]
+}

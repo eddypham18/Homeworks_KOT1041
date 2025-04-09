@@ -34,10 +34,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            //Bai 1 + 2
 //            GreetingCard(
 //                msg = "Phạm Hồng Thái - PH48495"
 //            )
-            CounterCard()
+
+            //Bai 3
+//            CounterCard()
+
         }
     }
 }
@@ -78,7 +82,6 @@ fun GreetingCard(msg: String) {
 //Bài 2
 @Composable
 fun CounterCard(){
-    //rememberSaveable không mất dữ liệu khi xoay màn hình hoặc thoát app tạm thời
     var count by rememberSaveable { mutableIntStateOf(0) }
 
     Column (modifier = Modifier.fillMaxWidth().padding(24.dp),
