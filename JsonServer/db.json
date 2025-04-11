@@ -1,34 +1,16 @@
 {
   "foods": [
     {
-      "id": "2",
-      "name": "Bánh",
-      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
-      "price": "15.99 $"
-    },
-    {
       "id": "3",
       "name": "Burger Deluxe",
       "avatar": "https://mediawinwin.vn/upload/images/sanpham/bao-gia-chup-mon-an-dich-vu-chup-anh-do-an-chuyen-nghiep-6.JPG",
       "price": "8.99 $"
     },
     {
+      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
       "id": "4",
-      "name": "Bánh",
-      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
+      "name": "Bánh 2",
       "price": "12.99 $"
-    },
-    {
-      "id": "5",
-      "name": "Grilled Salmon",
-      "avatar": "https://mediawinwin.vn/upload/images/sanpham/bao-gia-chup-mon-an-dich-vu-chup-anh-do-an-chuyen-nghiep-6.JPG",
-      "price": "18.99 $"
-    },
-    {
-      "id": "6",
-      "name": "Bánh",
-      "avatar": "https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg",
-      "price": "7.99 $"
     },
     {
       "id": "7",

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import thaiph.ph48495.demo.models.Food
+import kotlin.math.log
 
 class ViewModelApp:ViewModel() {
     //lay du lieu data food tu server
@@ -22,10 +23,26 @@ class ViewModelApp:ViewModel() {
         }
     }
 
-    fun deleteFood(id : Int){
+    fun deleteFood(id : String){
         viewModelScope.launch {
             try {
-                RetrofitInstance.api.deleteFood(id)
+                val res = RetrofitInstance.api.deleteFood(id)
+                if(res.isSuccessful){
+                    getAllFoods()
+                }
+            }catch (e:Exception){
+                Log.d("===",e.message.toString())
+            }
+        }
+    }
+
+    fun editFood(id: String, food: Food){
+        viewModelScope.launch {
+            try {
+                val res = RetrofitInstance.api.editFood(id, food)
+                if(res.isSuccessful){
+                    getAllFoods()
+                }
             }catch (e:Exception){
                 Log.d("===",e.message.toString())
             }
