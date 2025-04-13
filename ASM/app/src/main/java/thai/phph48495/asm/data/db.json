@@ -1,0 +1,285 @@
+{
+  "users": [
+    {
+      "id": "US001",
+      "name": "Phạm Hồng Thái",
+      "email": "thai@gmail.com",
+      "password": "123456",
+      "phone": "0987654321",
+      "addresses": [],
+      "paymentMethods": []
+    },
+    {
+      "id": "US002",
+      "name": "Nguyễn Văn A",
+      "email": "nguyenvana@gmail.com",
+      "password": "123456",
+      "phone": "0123456789",
+      "addresses": [],
+      "paymentMethods": []
+    },
+    {
+      "addresses": [
+        {
+          "address": "85 Dinh Thon",
+          "city": "Hanoi",
+          "country": "Vietnam",
+          "district": "Nam Tu Liem",
+          "id": "a2e4893e-f4cb-4eb5-a331-67bf628b2b2c",
+          "isDefault": true
+        }
+      ],
+      "email": "ly@gmail.com",
+      "id": "US5b7",
+      "name": "Ly",
+      "password": "thai123",
+      "paymentMethods": [],
+      "phone": ""
+    }
+  ],
+  "products": [
+    {
+      "id": "p1",
+      "name": "Black Simple Lamp",
+      "price": 12,
+      "stars": 4.5,
+      "reviews": 10,
+      "description": "Sofa set with modern design for comfortable living. Elevate your home décor with this stylish and functional item that combines aesthetics with comfort.",
+      "image": "https://m.media-amazon.com/images/I/71Vg4C7CJOL.jpg",
+      "category": "lamp"
+    },
+    {
+      "id": "p2",
+      "name": "Coffee Chair",
+      "price": 20,
+      "stars": 4,
+      "reviews": 80,
+      "description": "A modern chair that complements any living room. Perfect for both style and comfort, this chair features premium materials and ergonomic design.",
+      "image": "https://galaxyfurniture.pk/wp-content/uploads/2024/01/coffee-chair4.jpg",
+      "category": "chair"
+    },
+    {
+      "id": "p3",
+      "name": "Minimal Stand",
+      "price": 25,
+      "stars": 4.8,
+      "reviews": 200,
+      "description": "Elegant wooden table perfect for dining area. This minimal stand combines functionality with aesthetic appeal, making it a versatile addition to any space.",
+      "image": "https://www.theurbaneditions.com/cdn/shop/products/Marston-Wide-TVstand-Oak-OFD180SQ25-1b_ee48244d-568b-4c6c-afc4-6370d472051c.jpg?v=1614676881",
+      "category": "table"
+    },
+    {
+      "id": "p4",
+      "name": "Simple Desk",
+      "price": 50,
+      "stars": 4.3,
+      "reviews": 110,
+      "description": "Cozy armchair with a classic touch. Crafted with premium materials, this desk provides ample workspace while maintaining a sleek and stylish appearance.",
+      "image": "https://m.media-amazon.com/images/I/71IXdU9bCUL.jpg",
+      "category": "desk"
+    },
+    {
+      "id": "p5",
+      "name": "Comfort Sofa",
+      "price": 150,
+      "stars": 4.7,
+      "reviews": 180,
+      "description": "Luxurious and comfortable sofa for your living room. Features high-quality fabric upholstery and plush cushioning for ultimate relaxation.",
+      "image": "https://img.muji.net/img/item/4550512828358_01_400.jpg",
+      "category": "sofa"
+    },
+    {
+      "id": "p6",
+      "name": "Modern Bed Frame",
+      "price": 200,
+      "stars": 4.6,
+      "reviews": 130,
+      "description": "Elegant bed frame with a modern design. Made from durable materials for long-lasting quality and comfort.",
+      "image": "https://cdn.thewirecutter.com/wp-content/media/2022/01/bedframes-2048px-floyd-1.jpg?auto=webp&quality=75&width=1024",
+      "category": "bed"
+    }
+  ],
+  "carts": [
+    {
+      "id": "cart1",
+      "userId": "US001",
+      "productId": "p1",
+      "quantity": 2,
+      "totalCartItem": 24,
+      "nameProduct": "Black Simple Lamp",
+      "priceProduct": 12,
+      "imageProduct": "https://m.media-amazon.com/images/I/71Vg4C7CJOL.jpg"
+    },
+    {
+      "id": "cart2",
+      "userId": "US001",
+      "productId": "p2",
+      "quantity": 1,
+      "totalCartItem": 20,
+      "nameProduct": "Coffee Chair",
+      "priceProduct": 20,
+      "imageProduct": "https://galaxyfurniture.pk/wp-content/uploads/2024/01/coffee-chair4.jpg"
+    },
+    {
+      "id": "cart3",
+      "userId": "US002",
+      "productId": "p3",
+      "quantity": 3,
+      "totalCartItem": 75,
+      "nameProduct": "Minimal Stand",
+      "priceProduct": 25,
+      "imageProduct": "https://www.theurbaneditions.com/cdn/shop/products/Marston-Wide-TVstand-Oak-OFD180SQ25-1b_ee48244d-568b-4c6c-afc4-6370d472051c.jpg?v=1614676881"
+    }
+  ],
+  "favorites": [
+    {
+      "id": "c4a4",
+      "productId": "p3",
+      "userId": "US5b7"
+    },
+    {
+      "id": "8d66",
+      "productId": "p1",
+      "userId": "US5b7"
+    }
+  ],
+  "paymentMethods": [
+    {
+      "id": "pm1",
+      "userId": "US001",
+      "cardNumber": "**** **** **** 1234",
+      "cvv": "123",
+      "expirationDate": "12/25",
+      "isDefault": true
+    },
+    {
+      "id": "f743",
+      "userId": "US001",
+      "cardNumber": "**** **** **** 5678",
+      "cvv": "456",
+      "expirationDate": "05/24",
+      "isDefault": false
+    },
+    {
+      "id": "95d8",
+      "cardNumber": "2132132132131231",
+      "cvv": "1313",
+      "expirationDate": "11/11",
+      "isDefault": false,
+      "userId": "US5b7"
+    },
+    {
+      "id": "6b17",
+      "cardNumber": "2131232131232131",
+      "cvv": "1231",
+      "expirationDate": "13/21",
+      "isDefault": true,
+      "userId": "US5b7"
+    }
+  ],
+  "orders": [
+    {
+      "id": "c769",
+      "OrderID": 7154,
+      "_id": "ac3bb8a1",
+      "addressUser": "85 Dinh Thon",
+      "date": "2025-04-13",
+      "items": [
+        {
+          "nameProduct": "Black Simple Lamp",
+          "quantity": "1"
+        }
+      ],
+      "nameUser": "Ly",
+      "paymentUser": "2131232131232131",
+      "status": "processing",
+      "totalMoney": 17,
+      "totalQuantity": 1,
+      "userId": "US5b7"
+    },
+    {
+      "OrderID": 4054,
+      "addressUser": "85 Dinh Thon",
+      "date": "2025-04-13",
+      "id": "286b091f",
+      "items": [
+        {
+          "nameProduct": "Black Simple Lamp",
+          "quantity": "2"
+        }
+      ],
+      "nameUser": "Ly",
+      "paymentUser": "2131232131232131",
+      "status": "delivered",
+      "totalMoney": 29,
+      "totalQuantity": 2,
+      "userId": "US5b7"
+    },
+    {
+      "id": "89befc81",
+      "OrderID": 2563,
+      "addressUser": "85 Dinh Thon",
+      "date": "2025-04-13",
+      "items": [
+        {
+          "nameProduct": "Black Simple Lamp",
+          "quantity": "1"
+        }
+      ],
+      "nameUser": "Ly",
+      "paymentUser": "2131232131232131",
+      "status": "processing",
+      "totalMoney": 17,
+      "totalQuantity": 1,
+      "userId": "US5b7"
+    },
+    {
+      "OrderID": 6459,
+      "addressUser": "85 Dinh Thon",
+      "date": "2025-04-13",
+      "id": "3442f6a5",
+      "items": [
+        {
+          "nameProduct": "Black Simple Lamp",
+          "quantity": "2"
+        }
+      ],
+      "nameUser": "Ly",
+      "paymentUser": "2131232131232131",
+      "status": "delivered",
+      "totalMoney": 29,
+      "totalQuantity": 2,
+      "userId": "US5b7"
+    },
+    {
+      "OrderID": 6910,
+      "addressUser": "85 Dinh Thon",
+      "date": "2025-04-13",
+      "id": "32b48eeb",
+      "items": [
+        {
+          "nameProduct": "Black Simple Lamp",
+          "quantity": "2"
+        }
+      ],
+      "nameUser": "Ly",
+      "paymentUser": "2131232131232131",
+      "status": "delivered",
+      "totalMoney": 29,
+      "totalQuantity": 2,
+      "userId": "US5b7"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "a16c5c0e-2221-48c2-8460-1965dccbbc8c",
+      "dateCreated": "Apr 13, 2025 6:39:37 PM",
+      "isRead": false,
+      "message": "Đơn hàng của bạn đã được đặt thành công và đang được xử lý.",
+      "relatedId": "32b48eeb",
+      "title": "Đơn hàng #6910 đã được đặt",
+      "type": "order",
+      "userId": "US5b7"
+    }
+  ]
+}

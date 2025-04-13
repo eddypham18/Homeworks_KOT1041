@@ -44,6 +44,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 
 import thai.phph48495.asm.activity.HeaderHome1
 import thai.phph48495.asm.activity.HomeScreen
@@ -240,7 +242,10 @@ fun shouldShowBottomBar(currentRoute: String?): Boolean {
 
 @Composable
 fun NavigationGraph(navController: NavHostController, context: Context) {
-    NavHost(navController, startDestination = "splash") {
+    NavHost(
+        navController = navController,
+        startDestination = "splash",
+    ) {
         composable("splash"){ SplashScreen(navController = navController) }
         composable("login"){ LoginScreen(navController, context) }
         composable("order") { OrderScreen(navController) }
@@ -265,8 +270,14 @@ fun NavigationGraph(navController: NavHostController, context: Context) {
         composable("register"){ RegisterScreen(navController) }
         composable("shippingAddress"){ ShippingAddressScreen(navController) }
         composable("addShippingAddress"){ AddShippingAddressScreen(navController = navController)}
-        composable("addressDetail/{addressId}"){ navBackStackEntry ->
-
+        composable(
+            "editAddress/{addressId}",
+            arguments = listOf(navArgument("addressId") { type = NavType.StringType })
+        ){ navBackStackEntry ->
+            val addressId = navBackStackEntry.arguments?.getString("addressId")
+            addressId?.let {
+                EditAddressScreen(addressId = it, navController = navController)
+            }
         }
         composable("paymentMethod"){ PaymentMethodScreen(navController = navController)}
         composable("addPaymentMethod"){ AddPaymentScreen(navController) }

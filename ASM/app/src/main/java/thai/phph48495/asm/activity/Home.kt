@@ -49,11 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import thai.phph48495.asm.product.Category
-import thai.phph48495.asm.product.ListMenuChip
-import thai.phph48495.asm.product.ListProduct
-import thai.phph48495.asm.product.Product
 import thai.phph48495.asm.product.ProductScreen
 
 @Composable

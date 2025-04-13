@@ -18,13 +18,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -34,37 +40,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
+import thai.phph48495.asm.activity.UserSession
 import thai.phph48495.asm.order.checkout.DialogConfirm
 import thai.phph48495.asm.R
-import thai.phph48495.asm.address.Address
-import thai.phph48495.asm.paymentMethod.PaymentMethod
-
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    // Fake dữ liệu người dùng để hiển thị giao diện
-    val fakeUser = User(
-        uid = "fake123",
-        name = "Fake User",
-        email = "fakeuser@example.com",
-        phone = "0123456789",
-        addresses = listOf(
-            Address(address = "123 Fake Street, Fake City", isDefault = true)
-        ),
-        paymentMethods = listOf(
-            PaymentMethod(idMethod = "pm1", cardNumber = "**** **** **** 1234", cvv = "123", expirationDate = "12/25", isDefault = true)
-        )
-    )
-    // Sử dụng state cho user, có thể cập nhật nếu cần (ở đây chỉ hiển thị)
-    val userState = remember { mutableStateOf(fakeUser) }
+    // Sử dụng ViewModel
+    val profileViewModel: ProfileViewModel = viewModel()
+    val context = LocalContext.current
+    
+    // Lấy thông tin người dùng đã đăng nhập từ UserSession
+    val userSession = UserSession.getUser(context)
+    
+    // Theo dõi trạng thái từ ViewModel
+    val user = profileViewModel.user.value
+    val loading by profileViewModel.loading.collectAsState()
+    val error by profileViewModel.error.collectAsState()
+    
+    // Trạng thái hiển thị dialog xác nhận đăng xuất
     var showDialog by remember { mutableStateOf(false) }
+
+    // Lấy thông tin người dùng khi vào màn hình
+    LaunchedEffect(userSession?.id) {
+        if (userSession?.id != null) {
+            profileViewModel.getUserProfile(userSession.id)
+        }
+    }
+
+    // Hiển thị thông báo lỗi nếu có
+    LaunchedEffect(error) {
+        if (error != null) {
+            // Hiển thị thông báo lỗi
+            // Và reset lỗi sau một khoảng thời gian
+            kotlinx.coroutines.delay(3000)
+            profileViewModel.resetError()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -73,32 +96,83 @@ fun ProfileScreen(navController: NavController) {
             })
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            ItemMyProfile(user = userState.value)
-            Spacer(modifier = Modifier.height(12.dp))
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(8.dp)
-            ) {
-                CardOptionProfile(optionText = "My Orders", onClick = { navController.navigate("order") })
-                CardOptionProfile(optionText = "Shipping Address", onClick = { navController.navigate("shippingAddress") })
-                CardOptionProfile(optionText = "Payment Method", onClick = { navController.navigate("paymentMethod") })
-                CardOptionProfile(optionText = "My Reviews", onClick = { navController.navigate("myreviews") })
-                CardOptionProfile(optionText = "Setting", onClick = { navController.navigate("setting") })
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            // Hiển thị loading
+            if (loading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = Color(0xFF1E3A8A))
+                }
+            } 
+            // Hiển thị nội dung chính
+            else {
+                Column(modifier = Modifier.padding(paddingValues)) {
+                    // Hiển thị thông tin người dùng từ API hoặc session
+                    ItemMyProfile(user = user ?: userSession)
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.padding(8.dp)
+                    ) {
+                        CardOptionProfile(optionText = "My Orders", onClick = { navController.navigate("order") })
+                        CardOptionProfile(optionText = "Shipping Address", onClick = { navController.navigate("shippingAddress") })
+                        CardOptionProfile(optionText = "Payment Method", onClick = { navController.navigate("paymentMethod") })
+                        CardOptionProfile(optionText = "My Reviews", onClick = { navController.navigate("myreviews") })
+                        CardOptionProfile(optionText = "Setting", onClick = { navController.navigate("setting") })
+                    }
+                }
+            }
+            
+            // Hiển thị lỗi
+            if (error != null) {
+                Snackbar(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp)
+                ) {
+                    Text(text = error ?: "Đã xảy ra lỗi")
+                }
             }
         }
     }
+    
+    // Dialog xác nhận đăng xuất
     DialogConfirm(
         showDialog = showDialog,
         title = "Thông Báo",
         text = "Bạn có chắc muốn đăng xuất?",
         onDismiss = { showDialog = false },
-        onConfirm = { logout(navController) }
+        onConfirm = { 
+            UserSession.logout(context)
+            navController.navigate("login") {
+                popUpTo("home") { inclusive = true }
+            }
+        }
     )
 }
 
 @Composable
-fun ItemMyProfile(user: User) {
+fun ItemMyProfile(user: User?) {
+    if (user == null) {
+        // Hiển thị trạng thái trống nếu không có dữ liệu
+        EmptyStateView(
+            icon = R.drawable.img_logout,
+            title = "Bạn chưa đăng nhập",
+            message = "Vui lòng đăng nhập để xem thông tin cá nhân",
+            buttonText = "Đăng nhập",
+            onClick = {
+                // Xử lý khi người dùng bấm nút đăng nhập
+            }
+        )
+        return
+    }
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,7 +187,7 @@ fun ItemMyProfile(user: User) {
                 .size(100.dp)
         ) {
             AsyncImage(
-                model = "https://chiemtaimobile.vn/images/companies/1/%E1%BA%A2nh%20Blog/avatar-facebook-dep/Anh-avatar-hoat-hinh-de-thuong-xinh-xan.jpg?1704788263223",
+                model = "https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg",
                 contentDescription = "img profile",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -131,6 +205,12 @@ fun ItemMyProfile(user: User) {
                 text = user.email,
                 style = MaterialTheme.typography.titleMedium.copy(color = Color.Gray)
             )
+            if (user.phone?.isNotEmpty() == true) {
+                Text(
+                    text = user.phone,
+                    style = MaterialTheme.typography.titleMedium.copy(color = Color.Gray)
+                )
+            }
         }
     }
 }
@@ -205,6 +285,55 @@ fun HeaderProfile(modifier: Modifier, text: String, onLogout: () -> Unit) {
     }
 }
 
-fun logout(navController: NavController) {
-    navController.navigate("login")
+@Composable
+fun EmptyStateView(
+    icon: Int,
+    title: String,
+    message: String,
+    buttonText: String,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = null,
+            modifier = Modifier
+                .size(120.dp)
+                .padding(bottom = 24.dp)
+        )
+        
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Gray,
+            modifier = Modifier.padding(bottom = 24.dp),
+            textAlign = TextAlign.Center
+        )
+        
+        Button(
+            onClick = onClick,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E3A8A)
+            ),
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text(text = buttonText)
+        }
+    }
 }

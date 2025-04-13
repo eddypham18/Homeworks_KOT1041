@@ -1,6 +1,6 @@
 package thai.phph48495.asm.product
 
-import android.text.style.ClickableSpan
+import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,9 +27,13 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -45,73 +49,172 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-
-
+import thai.phph48495.asm.activity.UserSession
+import thai.phph48495.asm.cart.CartViewModel
+import thai.phph48495.asm.favorite.FavoriteViewModel
 
 @Composable
 fun ProductDetailScreen(productId: String, navController: NavController) {
-    // Fake dữ liệu sản phẩm mẫu
-    val fakeProduct = Product(
-        _id = productId,
-        name = "Black Simple Lamp",
-        price = 29.99,
-        stars = 4.5,
-        reviews = 120,
-        description = "This is a sample description for a fake product. It provides details about features and usage.",
-        image = "https://s3-alpha-sig.figma.com/img/2443/fe11/03a0919f36f923a162b57615bd507c3e?Expires=1743984000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fdFTG78faNNUcHvuxZlX2D6Z195~UYWa6e0cNS6731JACHwE0p8Slh3MCpAis1Nyjw05KRhHvXDkZnXBoMYjc10noFvbjVaLF~PYUMKFVLHonocWIAf42mg7Y~J2oLDNmcgJfg9NuM6VVZOpDb42-f8THzgZ2F6FRsfbcUE~p3VT4BqnOFYmeHZS4pSQUbjfEpESKK6k1BPFWwyQ~hvMA0QnBPHSubedFIWLuu3e74quQcbTXPI0wP5l6yBO3p1yn-wPJAwkAenbJ4zoJeoSAB4f4WBKbeHXHJ1WhU4W4fAHSYar4bC1Pfkj405Sclo~UMPU4uWfOLPB1-uFrZwbHg__"
-    )
+    // ViewModel
+    val productViewModel: ProductViewModel = viewModel()
+    val cartViewModel: CartViewModel = viewModel()
+    val favoriteViewModel: FavoriteViewModel = viewModel()
+    val productDetail = productViewModel.productDetail.value
+    val loading by productViewModel.loading.collectAsState()
+    val error by productViewModel.error.collectAsState()
+    val context = LocalContext.current
+    
+    // Loading và error từ CartViewModel và FavoriteViewModel
+    val cartLoading by cartViewModel.loading.collectAsState()
+    val cartError by cartViewModel.error.collectAsState()
+    val favoriteLoading by favoriteViewModel.loading.collectAsState()
+    val favoriteError by favoriteViewModel.error.collectAsState()
+    
+    // Lấy dữ liệu sản phẩm khi màn hình được khởi tạo
+    LaunchedEffect(productId) {
+        productViewModel.getProductById(productId)
+    }
 
     var productQuantity by remember { mutableStateOf(1) }
     var isFavorite by remember { mutableStateOf(false) }
-    val userId = "fake_user"
+    val userId = UserSession.getUserId(context) ?: ""
+    
+    // Kiểm tra sản phẩm có trong danh sách yêu thích không
+    LaunchedEffect(userId, productId) {
+        if (userId.isNotEmpty() && productId.isNotEmpty()) {
+            favoriteViewModel.getFavorites(userId) // Đầu tiên lấy danh sách yêu thích mới nhất
+            favoriteViewModel.checkFavorite(userId, productId) { result ->
+                isFavorite = result
+            }
+        }
+    }
+    
+    // Theo dõi thay đổi từ favoriteViewModel để cập nhật trạng thái yêu thích
+    val favorites by favoriteViewModel.favorites.collectAsState()
+    
+    // Cập nhật trạng thái yêu thích khi danh sách favorites thay đổi
+    LaunchedEffect(favorites) {
+        if (userId.isNotEmpty() && productId.isNotEmpty()) {
+            val isProductFavorite = favorites.any { it.userId == userId && it.productId == productId }
+            isFavorite = isProductFavorite
+        }
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 70.dp) // Khoảng cách cho footer
-        ) {
-            // Header hiển thị ảnh sản phẩm và nút Back, Color Picker
-            Box(
-                modifier = Modifier
-                    .weight(1.2f)
-                    .fillMaxWidth()
+        // Hiển thị lỗi nếu có
+        if (error != null || cartError != null || favoriteError != null) {
+            Snackbar(
+                modifier = Modifier.padding(16.dp)
             ) {
-                HeaderProductDetail(fakeProduct, navController)
+                Text(text = error ?: cartError ?: favoriteError ?: "Đã xảy ra lỗi")
             }
-            // Nội dung chi tiết sản phẩm
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                BodyProductDetail(
-                    product = fakeProduct,
-                    quantity = productQuantity,
-                    onMinus = { if (productQuantity > 1) productQuantity-- },
-                    onPlus = { productQuantity++ },
-                    navController = navController
-                )
-                Spacer(modifier = Modifier.height(10.dp))
+            LaunchedEffect(error) {
+                if (error != null) {
+                    productViewModel.resetError()
+                }
+            }
+            LaunchedEffect(cartError) {
+                if (cartError != null) {
+                    cartViewModel.resetError()
+                }
+            }
+            LaunchedEffect(favoriteError) {
+                if (favoriteError != null) {
+                    favoriteViewModel.resetError()
+                }
             }
         }
-        // Footer với nút thêm vào giỏ hàng và thay đổi trạng thái yêu thích
-        FooterProductDetail(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth(),
-            productId = productId,
-            userId = userId,
-            isFavorite = isFavorite,
-            quantity = productQuantity,
-            navController = navController
-        )
+        
+        // Hiển thị loading
+        if (loading || cartLoading || favoriteLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } 
+        // Hiển thị chi tiết sản phẩm khi có dữ liệu
+        else if (productDetail != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 70.dp) // Khoảng cách cho footer
+            ) {
+                // Header hiển thị ảnh sản phẩm và nút Back, Color Picker
+                Box(
+                    modifier = Modifier
+                        .weight(1.2f)
+                        .fillMaxWidth()
+                ) {
+                    HeaderProductDetail(productDetail, navController)
+                }
+                // Nội dung chi tiết sản phẩm
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                ) {
+                    BodyProductDetail(
+                        product = productDetail,
+                        quantity = productQuantity,
+                        onMinus = { if (productQuantity > 1) productQuantity-- },
+                        onPlus = { productQuantity++ },
+                        navController = navController
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+            }
+            // Footer với nút thêm vào giỏ hàng và thay đổi trạng thái yêu thích
+            FooterProductDetail(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(),
+                product = productDetail,
+                userId = userId,
+                isFavorite = isFavorite,
+                quantity = productQuantity,
+                navController = navController,
+                onAddToCart = {
+                    if (userId.isEmpty()) {
+                        Toast.makeText(context, "Vui lòng đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show()
+                    } else {
+                        cartViewModel.addToCart(userId, productDetail, productQuantity)
+                        Toast.makeText(context, "Đã thêm ${productDetail.name} vào giỏ hàng", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onToggleFavorite = { favorite ->
+                    if (userId.isEmpty()) {
+                        Toast.makeText(context, "Vui lòng đăng nhập để thêm vào yêu thích", Toast.LENGTH_SHORT).show()
+                    } else {
+                        if (favorite) {
+                            favoriteViewModel.addToFavorite(userId, productDetail)
+                            Toast.makeText(context, "Đã thêm ${productDetail.name} vào danh sách yêu thích", Toast.LENGTH_SHORT).show()
+                        } else {
+                            favoriteViewModel.removeFavoriteByProductId(userId, productId)
+                            Toast.makeText(context, "Đã xóa ${productDetail.name} khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show()
+                        }
+                        favoriteViewModel.getFavorites(userId)
+                    }
+                }
+            )
+        }
+        // Hiển thị thông báo khi không tìm thấy sản phẩm
+        else if (!loading && error == null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Không tìm thấy sản phẩm", fontSize = 18.sp)
+            }
+        }
     }
 }
 
@@ -197,153 +300,153 @@ fun BodyProductDetail(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row {
-            Text(
-                text = "$ ${product.price}",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(start = 25.dp).align(Alignment.CenterVertically)
+            // Xếp hạng sản phẩm
+            Icon(
+                Icons.Default.Star,
+                contentDescription = "Rating",
+                tint = Color(0xFFFFB818)
             )
-            Spacer(modifier = Modifier.weight(1f))
-            QuantityProduct(
-                modifier = Modifier,
-                quantity = quantity,
-                onMinus = onMinus,
-                onPlus = onPlus
+            Text(
+                text = "${product.stars}",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Gray
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = "(${product.reviews} reviews)",
+                fontSize = 16.sp,
+                color = Color.Gray
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(onClick = {navController.navigate("reviews")},
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-        ) {
-            RateProduct(
-            stars = product.stars.toString(),
-            reviewCount = product.reviews.toString()
-        ) }
-
-
-        Spacer(modifier = Modifier.height(13.dp))
+        Spacer(modifier = Modifier.height(15.dp))
+        // Mô tả sản phẩm
         Text(
             text = product.description,
-            lineHeight = 24.sp,
+            fontSize = 16.sp,
             color = Color.Gray,
-            fontSize = 16.sp
+            fontFamily = FontFamily.SansSerif
         )
-
+        Spacer(modifier = Modifier.height(20.dp))
+        
+        // Chọn số lượng
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = onMinus,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFF5F5F5),
+                        contentColor = Color.Black
+                    ),
+                    modifier = Modifier.size(30.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(text = "-", fontSize = 20.sp)
+                }
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = quantity.toString(),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Button(
+                    onClick = onPlus,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFF5F5F5),
+                        contentColor = Color.Black
+                    ),
+                    modifier = Modifier.size(30.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(text = "+", fontSize = 20.sp)
+                }
+            }
+            
+            // Hiển thị giá
+            Text(
+                text = "$ ${product.price}",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
 
 @Composable
 fun FooterProductDetail(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
+    product: Product,
     userId: String,
-    productId: String,
     isFavorite: Boolean,
     quantity: Int,
-    navController: NavController
+    navController: NavController,
+    onAddToCart: () -> Unit,
+    onToggleFavorite: (Boolean) -> Unit
 ) {
-
+    var favorite by remember { mutableStateOf(isFavorite) }
+    
+    // Cập nhật trạng thái khi isFavorite thay đổi từ bên ngoài
+    LaunchedEffect(isFavorite) {
+        favorite = isFavorite
+    }
+    
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .height(50.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .height(60.dp)
+            .background(Color.Transparent),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        // Nút yêu thích
         Button(
-            onClick = { /* Không xử lý logic */ },
-            modifier = Modifier
-                .fillMaxHeight()
-                .size(60.dp),
+            onClick = { 
+                favorite = !favorite
+                onToggleFavorite(favorite)
+            },
+            shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Gray,
-                contentColor = Color.Black
+                containerColor = Color.White,
+                contentColor = if (favorite) Color.Red else Color.Black
             ),
-            shape = RoundedCornerShape(5.dp),
-            contentPadding = PaddingValues(10.dp)
-        ) {
-            if (isFavorite)
-                Icon(Icons.Default.Favorite, contentDescription = "Favorite")
-            else
-                Icon(Icons.Default.FavoriteBorder, contentDescription = "Not Favorite")
-        }
-        Spacer(modifier = Modifier.width(20.dp))
-        Button(
-            onClick = { navController.navigate("cart") },
+            elevation = ButtonDefaults.buttonElevation(5.dp),
             modifier = Modifier
+                .padding(end = 16.dp)
+                .width(60.dp)
                 .fillMaxHeight()
-                .weight(1f)
-                .padding(horizontal = 20.dp),
-            shape = RoundedCornerShape(7.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-            elevation = ButtonDefaults.buttonElevation(12.dp)
         ) {
-            Text(
-                text = "Add to cart",
-                fontSize = 18.sp,
-                color = Color.White
+            Icon(
+                if (favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite",
+                modifier = Modifier.size(24.dp)
             )
         }
-    }
-}
-
-@Composable
-fun QuantityProduct(
-    modifier: Modifier,
-    quantity: Int,
-    onMinus: () -> Unit,
-    onPlus: () -> Unit
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+        
+        // Nút thêm vào giỏ hàng
         Button(
-            onClick = onMinus,
+            onClick = onAddToCart,
+            shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0x9ED8D8D8),
-                contentColor = Color.Gray
+                containerColor = Color.Black,
+                contentColor = Color.White
             ),
-            shape = RoundedCornerShape(5.dp),
-            contentPadding = PaddingValues(1.dp),
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
         ) {
-            Text("-", fontSize = 20.sp)
+            Text(
+                text = "Add to cart | $${product.price * quantity}",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         }
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(text = "$quantity", fontSize = 16.sp)
-        Spacer(modifier = Modifier.width(12.dp))
-        Button(
-            onClick = onPlus,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0x9ED8D8D8),
-                contentColor = Color.Gray
-            ),
-            shape = RoundedCornerShape(5.dp),
-            contentPadding = PaddingValues(1.dp),
-            modifier = Modifier.size(30.dp)
-        ) {
-            Text("+", fontSize = 20.sp)
-        }
-    }
-}
-
-@Composable
-fun RateProduct(stars: String, reviewCount: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            Icons.Default.Star,
-            contentDescription = "",
-            tint = Color.Yellow,
-            modifier = Modifier.size(30.dp)
-        )
-        Spacer(modifier = Modifier.width(6.dp))
-        Text(
-            text = stars,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(text = "($reviewCount review)", color = Color.Gray)
     }
 }
 

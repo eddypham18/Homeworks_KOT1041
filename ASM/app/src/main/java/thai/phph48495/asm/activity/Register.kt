@@ -1,5 +1,6 @@
 package thai.phph48495.asm.activity
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -43,27 +47,59 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import thai.phph48495.asm.profile.User
 import thai.phph48495.asm.R
+import thai.phph48495.asm.ProgressDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(navController: NavController){
+    val context = LocalContext.current
     var nameState by remember { mutableStateOf(TextFieldValue("")) }
     var emailState by remember { mutableStateOf(TextFieldValue("")) }
     var passwordState by remember { mutableStateOf(TextFieldValue("")) }
     var confirmPasswordState by remember { mutableStateOf(TextFieldValue("")) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-
-    var showDialog by remember {
-        mutableStateOf(false)
+    var showDialog by remember { mutableStateOf(false) }
+    var showDialogProgress by remember { mutableStateOf(false) }
+    
+    // ViewModel
+    val authViewModel: AuthViewModel = viewModel()
+    val registerState by authViewModel.registerState.collectAsState()
+    
+    LaunchedEffect(registerState) {
+        when (registerState) {
+            is RegisterState.Loading -> {
+                showDialogProgress = true
+                errorMessage = null
+            }
+            is RegisterState.Success -> {
+                showDialogProgress = false
+                Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
+                navController.navigate("login")
+                authViewModel.resetRegisterState()
+            }
+            is RegisterState.Error -> {
+                showDialogProgress = false
+                errorMessage = (registerState as RegisterState.Error).message
+                showDialog = true
+                authViewModel.resetRegisterState()
+            }
+            else -> {
+                showDialogProgress = false
+            }
+        }
     }
 
     if (showDialog && errorMessage != null) {
         DialogNotify(onConfirmation = {showDialog = false }, dialogTitle = "Thông báo", dialogMessage = errorMessage!!)
     }
     
+    if (showDialogProgress){
+        ProgressDialog()
+    }
 
     Column(
         modifier = Modifier
@@ -94,15 +130,36 @@ fun RegisterScreen(navController: NavController){
                 onPasswordChange = {passwordState = it},
                 onConfirmPasswordChange = {confirmPasswordState = it},
                 onSignUpClick = {
+                    val name = nameState.text
+                    val email = emailState.text
+                    val password = passwordState.text
+                    val confirmPassword = confirmPasswordState.text
+                    
+                    if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                        errorMessage = "Vui lòng điền đầy đủ thông tin"
+                        showDialog = true
+                    } else if (password != confirmPassword) {
+                        errorMessage = "Mật khẩu xác nhận không khớp"
+                        showDialog = true
+                    } else if (!isValidEmail(email)) {
+                        errorMessage = "Email không hợp lệ"
+                        showDialog = true
+                    } else {
+                        authViewModel.register(name, email, password)
+                    }
                 },
                 errorMessage = errorMessage
             )
-
         }
-
-
     }
 }
+
+// Kiểm tra email hợp lệ
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    return email.matches(emailRegex.toRegex())
+}
+
 @Composable
 fun HeaderRegis(modifier: Modifier){
     Box(modifier = modifier.fillMaxWidth()) {

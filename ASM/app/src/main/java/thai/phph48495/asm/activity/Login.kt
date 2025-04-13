@@ -33,6 +33,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import thai.phph48495.asm.ProgressDialog
 import thai.phph48495.asm.R
@@ -65,10 +67,59 @@ fun LoginScreen(navController: NavController, context: Context){
     var emailState by remember { mutableStateOf(TextFieldValue("")) }
     var passwordState by remember { mutableStateOf(TextFieldValue("")) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var  rememberMe by remember { mutableStateOf(false) }
+    var rememberMe by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
-    var showDialogProgress by remember {
-        mutableStateOf(false)
+    var showDialogProgress by remember { mutableStateOf(false) }
+    
+    // ViewModel
+    val authViewModel: AuthViewModel = viewModel()
+    val loginState by authViewModel.loginState.collectAsState()
+    
+    // Kiểm tra người dùng đã đăng nhập chưa
+    LaunchedEffect(Unit) {
+        if (UserSession.isLoggedIn(context)) {
+            navController.navigate("Home") {
+                popUpTo("login") { inclusive = true }
+            }
+        }
+    }
+
+    LaunchedEffect(loginState) {
+        when (loginState) {
+            is LoginState.Loading -> {
+                showDialogProgress = true
+                errorMessage = null
+            }
+            is LoginState.Success -> {
+                showDialogProgress = false
+                val user = (loginState as LoginState.Success).user
+                
+                // Lưu thông tin người dùng vào UserSession
+                UserSession.saveUser(context, user)
+                
+                // Lưu thông tin "remember me" nếu được chọn
+                if (rememberMe) {
+                    editor.putString("email", emailState.text)
+                    editor.putString("pass", passwordState.text)
+                    editor.putBoolean("rememberMe", true)
+                    editor.apply()
+                }
+                
+                navController.navigate("Home") {
+                    popUpTo("login") { inclusive = true }
+                }
+                authViewModel.resetLoginState()
+            }
+            is LoginState.Error -> {
+                showDialogProgress = false
+                errorMessage = (loginState as LoginState.Error).message
+                showDialog = true
+                authViewModel.resetLoginState()
+            }
+            else -> {
+                showDialogProgress = false
+            }
+        }
     }
 
     if (showDialog){
@@ -123,14 +174,16 @@ fun LoginScreen(navController: NavController, context: Context){
                 onPasswordChange = { passwordState = it },
                 onRememberMeChange = {rememberMe = it},
                 onLoginClick = {
-                    navController.navigate("Home")
+                    if (emailState.text.isEmpty() || passwordState.text.isEmpty()) {
+                        errorMessage = "Vui lòng nhập đầy đủ email và mật khẩu"
+                        showDialog = true
+                    } else {
+                        authViewModel.login(emailState.text, passwordState.text)
+                    }
                 },
                 errorMessage = errorMessage
                 )
-
         }
-
-
     }
 }
 @Composable

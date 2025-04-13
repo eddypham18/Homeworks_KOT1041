@@ -20,80 +20,106 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import thai.phph48495.asm.activity.HeaderWithBack
+import thai.phph48495.asm.activity.UserSession
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShippingAddressScreen(navController: NavController) {
-    // Tạo dữ liệu giả cho danh sách địa chỉ
-    val fakeAddresses = remember {
-        listOf(
-            Address(
-                idAddress = "1",
-                address = "123 Fake Street, Fake City, Country",
-                isDefault = true
-            ),
-            Address(
-                idAddress = "2",
-                address = "456 Another Rd, Some City, Country",
-                isDefault = false
-            ),
-            Address(
-                idAddress = "3",
-                address = "789 Example Ave, Other City, Country",
-                isDefault = false
-            )
-        )
+fun ShippingAddressScreen(
+    navController: NavController,
+    addressViewModel: AddressViewModel = viewModel()
+) {
+    val context = LocalContext.current
+    val userId = UserSession.getUserId(context) ?: ""
+    
+    // Hiển thị thông báo nếu chưa đăng nhập
+    val snackbarHostState = remember { SnackbarHostState() }
+    
+    if (userId.isEmpty()) {
+        DisposableEffect(Unit) {
+            // Chuyển về trang đăng nhập nếu chưa đăng nhập
+            navController.navigate("login") {
+                popUpTo("shippingAddress") { inclusive = true }
+            }
+            onDispose { }
+        }
+        return
     }
-    // Fake tên người dùng mặc định
-    val defaultUsername = "Fake User"
+    
+    // Theo dõi dữ liệu từ ViewModel
+    val user = addressViewModel.currentUser.value
+    val isLoading = addressViewModel.isLoading.value ?: false
+    val error = addressViewModel.error.value
+
+    // Gọi API khi màn hình được hiển thị
+    DisposableEffect(key1 = userId) {
+        addressViewModel.getUserAddresses(userId)
+        onDispose { /* Dọn dẹp nếu cần */ }
+    }
 
     Scaffold(
         topBar = {
             HeaderWithBack(modifier = Modifier, text = "Address", navController = navController)
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         content = { paddingValues ->
             Box(
                 modifier = Modifier
                     .padding(paddingValues)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                if (fakeAddresses.isEmpty()) {
-                    Text(text = "Loading addresses...", modifier = Modifier.padding(16.dp))
-                } else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(8.dp)
-                    ) {
-                        items(fakeAddresses) { address ->
-                            CardShippingAddress(
-                                address = address,
-                                nameUser = defaultUsername,
-                                onDefaultChange = { /* Fake: không xử lý logic */ },
-                                onClickDetail = {
-                                    navController.navigate("addressDetail/${address.idAddress}")
-                                }
-                            )
+                when {
+                    isLoading -> CircularProgressIndicator()
+                    error != null -> Text(text = error, color = Color.Red)
+                    user?.addresses.isNullOrEmpty() -> Text(text = "Bạn chưa có địa chỉ nào")
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(8.dp)
+                        ) {
+                            val addresses = user?.addresses ?: emptyList()
+                            items(addresses) { address ->
+                                CardShippingAddress(
+                                    address = address,
+                                    nameUser = user?.name ?: "",
+                                    onDefaultChange = { isDefault ->
+                                        if (isDefault) {
+                                            addressViewModel.updateDefaultAddress(userId, address.id)
+                                        }
+                                    },
+                                    onClickDetail = {
+                                        navController.navigate("editAddress/${address.id}")
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -141,15 +167,28 @@ fun CardShippingAddress(
                         text = nameUser,
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
-                    Icon(Icons.Default.Edit, contentDescription = "Edit address")
+                    Icon(
+                        Icons.Default.Edit, 
+                        contentDescription = "Edit address",
+                        modifier = Modifier.clickable { onClickDetail() }
+                    )
                 }
                 Divider(
                     color = Color.LightGray,
                     thickness = 1.dp,
                     modifier = Modifier.fillMaxWidth()
                 )
+                
+                // Hiển thị địa chỉ đầy đủ
+                val fullAddress = buildString {
+                    append(address.address)
+                    if (address.district.isNotEmpty()) append(", ${address.district}")
+                    if (address.city.isNotEmpty()) append(", ${address.city}")
+                    if (address.country.isNotEmpty()) append(", ${address.country}")
+                }
+                
                 Text(
-                    text = address.address,
+                    text = fullAddress,
                     modifier = Modifier.padding(12.dp),
                     fontSize = 15.sp,
                     color = Color.Gray

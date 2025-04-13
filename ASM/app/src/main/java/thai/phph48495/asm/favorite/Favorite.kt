@@ -1,7 +1,9 @@
 package thai.phph48495.asm.favorite
 
+import thai.phph48495.asm.product.Product
+
 data class Favorite(
-    val _id: String,
+    val id: String,
     val userId: String,
     val productId: String,
     val isFavorite: Boolean,

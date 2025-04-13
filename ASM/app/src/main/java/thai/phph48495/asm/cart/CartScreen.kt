@@ -1,5 +1,6 @@
 package thai.phph48495.asm.cart
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,13 +23,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,77 +45,134 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import thai.phph48495.asm.ProgressDialog
 import thai.phph48495.asm.activity.ButtonSplash
 import thai.phph48495.asm.activity.HeaderWithBack
+import thai.phph48495.asm.activity.UserSession
 import thai.phph48495.asm.product.navigateToProductDetail
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(navController: NavController) {
-    // Tạo dữ liệu giả
-    val cartProducts = listOf(
-        Cart(
-            _id = "2",
-            userId = "user1",
-            productId = "p2",
-            nameProduct = "Black Simple Lamp",
-            imageProduct = "https://s3-alpha-sig.figma.com/img/2443/fe11/03a0919f36f923a162b57615bd507c3e?Expires=1743984000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fdFTG78faNNUcHvuxZlX2D6Z195~UYWa6e0cNS6731JACHwE0p8Slh3MCpAis1Nyjw05KRhHvXDkZnXBoMYjc10noFvbjVaLF~PYUMKFVLHonocWIAf42mg7Y~J2oLDNmcgJfg9NuM6VVZOpDb42-f8THzgZ2F6FRsfbcUE~p3VT4BqnOFYmeHZS4pSQUbjfEpESKK6k1BPFWwyQ~hvMA0QnBPHSubedFIWLuu3e74quQcbTXPI0wP5l6yBO3p1yn-wPJAwkAenbJ4zoJeoSAB4f4WBKbeHXHJ1WhU4W4fAHSYar4bC1Pfkj405Sclo~UMPU4uWfOLPB1-uFrZwbHg__"
-            ,
-            priceProduct = 15.0,
-            quantity = 2,
-            totalCartItem = 30.0
-        )
-    )
-
-    // Tính tổng giá trị giỏ hàng
-    val totalCartPrice = cartProducts.sumOf { it.totalCartItem }
-
-    // Đang không sử dụng loading
-    val isLoading = false
+    val context = LocalContext.current
+    val cartViewModel: CartViewModel = viewModel()
+    val userId = UserSession.getUserId(context) ?: return
+    
+    // Lấy dữ liệu từ ViewModel
+    val cartItems = cartViewModel.cartItems.value
+    val totalCartPrice = cartViewModel.totalCart.value
+    val loading by cartViewModel.loading.collectAsState()
+    val error by cartViewModel.error.collectAsState()
+    
+    // Lấy giỏ hàng khi màn hình được khởi tạo
+    LaunchedEffect(userId) {
+        cartViewModel.getCartsByUserId(userId)
+    }
 
     Scaffold(
         topBar = {
-            HeaderWithBack(modifier = Modifier, text = "Cart", navController = navController)
+            HeaderWithBack(modifier = Modifier, text = "Giỏ hàng", navController = navController)
         },
         content = { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                    items(cartProducts) { cart ->
-                        // Không cần xử lý cập nhật số lượng nên truyền hàm rỗng
-                        ItemCart(cart = cart, onQuantityUpdate = {}, navController = navController)
+            Box(modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+            ) {
+                // Hiển thị lỗi nếu có
+                if (error != null) {
+                    Snackbar(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(text = error ?: "Đã xảy ra lỗi")
+                    }
+                    LaunchedEffect(error) {
+                        if (error != null) {
+                            cartViewModel.resetError()
+                        }
                     }
                 }
-                if (isLoading) {
-                    ProgressDialog()
+                
+                // Hiển thị loading
+                if (loading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } 
+                // Hiển thị giỏ hàng nếu có dữ liệu
+                else if (!cartItems.isNullOrEmpty()) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(7.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(cartItems) { cart ->
+                            ItemCart(
+                                cart = cart, 
+                                onQuantityUpdate = { newQuantity ->
+                                    if (newQuantity > 0) {
+                                        cartViewModel.updateCartQuantity(cart.id, userId, newQuantity)
+                                    }
+                                },
+                                onDeleteCart = {
+                                    cartViewModel.deleteCart(cart.id, userId)
+                                },
+                                navController = navController
+                            )
+                        }
+                    }
+                } 
+                // Hiển thị thông báo nếu giỏ hàng trống
+                else if (!loading && error == null) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "Giỏ hàng trống", fontSize = 18.sp)
+                    }
                 }
             }
         },
         bottomBar = {
-            Column(
-                modifier = Modifier.padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+            if (!cartItems.isNullOrEmpty()) {
+                Column(
+                    modifier = Modifier.padding(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(text = "Total: ")
-                    Text(text = "$ $totalCartPrice")
-                }
-                ButtonSplash(
-                    modifier = Modifier
-                        .height(60.dp)
-                        .padding(8.dp),
-                    text = "Check out",
-                    onclick = {
-                        navController.navigate("checkout_screen/${totalCartPrice}")
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Tổng tiền:",
+                            fontSize = 18.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+                        )
+                        Text(
+                            text = "$ $totalCartPrice",
+                            fontSize = 18.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                            color = Color.Red
+                        )
                     }
-                )
+                    ButtonSplash(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp)
+                            .padding(8.dp),
+                        text = "Thanh toán",
+                        onclick = {
+                            // Điều hướng đến màn hình thanh toán
+                            navController.navigate("checkout_screen/$totalCartPrice")
+                        }
+                    )
+                }
             }
         }
     )
@@ -119,6 +182,7 @@ fun CartScreen(navController: NavController) {
 fun ItemCart(
     cart: Cart,
     onQuantityUpdate: (newQuantity: Int) -> Unit,
+    onDeleteCart: () -> Unit,
     navController: NavController,
 ) {
     Box(
@@ -143,7 +207,6 @@ fun ItemCart(
                         .background(Color.LightGray)
                         .width(100.dp)
                         .height(100.dp)
-                        .padding(bottom = 12.dp)
                 ) {
                     AsyncImage(
                         model = cart.imageProduct,
@@ -167,20 +230,23 @@ fun ItemCart(
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
-                    // Giao diện số lượng nhưng không thay đổi dữ liệu thật
                     QuantityCart(
                         modifier = Modifier,
                         quantity = cart.quantity,
-                        onMinus = {},
-                        onPlus = {}
+                        onMinus = { 
+                            if (cart.quantity > 1) {
+                                onQuantityUpdate(cart.quantity - 1)
+                            }
+                        },
+                        onPlus = { onQuantityUpdate(cart.quantity + 1) }
                     )
                 }
             }
             Icon(
                 Icons.Default.Close,
-                contentDescription = "",
+                contentDescription = "Delete",
                 modifier = Modifier.clickable {
-                    // Không có hành động xóa
+                    onDeleteCart()
                 }
             )
         }
@@ -201,18 +267,21 @@ fun QuantityCart(
     onMinus: () -> Unit,
     onPlus: () -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
         Button(
             onClick = onMinus,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0x9ED8D8D8),
-                contentColor = Color.Gray
+                contentColor = Color.Black
             ),
-            shape = RoundedCornerShape(5.dp),
-            contentPadding = PaddingValues(1.dp),
-            modifier = Modifier.size(30.dp)
+            shape = RoundedCornerShape(4.dp),
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier.size(24.dp)
         ) {
-            Text("-", fontSize = 20.sp)
+            Text("-", fontSize = 16.sp)
         }
         Spacer(modifier = Modifier.width(12.dp))
         Text(text = "$quantity", fontSize = 16.sp)
@@ -221,13 +290,13 @@ fun QuantityCart(
             onClick = onPlus,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0x9ED8D8D8),
-                contentColor = Color.Gray
+                contentColor = Color.Black
             ),
-            shape = RoundedCornerShape(5.dp),
-            contentPadding = PaddingValues(1.dp),
-            modifier = Modifier.size(30.dp)
+            shape = RoundedCornerShape(4.dp),
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier.size(24.dp)
         ) {
-            Text("+", fontSize = 20.sp)
+            Text("+", fontSize = 16.sp)
         }
     }
 }

@@ -1,7 +1,7 @@
 package thai.phph48495.asm.address
 
 data class Address(
-    val idAddress : String = "",
+    val id : String,
     val address: String = "",
     val country: String = "",
     val city: String = "",
