@@ -9,121 +9,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="304911f2-7a22-49d3-b0ba-c140f73eed53" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/AuthService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/AuthViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/AddressService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/AddressViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/cart/CartService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/cart/CartViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/contants/Contants.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/data/db.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/favorite/FavoriteService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/favorite/FavoriteViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/PaymentService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/PaymentViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/ProductService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/ProductViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/service/ApiService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/service/ViewModelApp.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/MainActivity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/activity/Home.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/activity/Login.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/activity/Register.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/activity/Splash.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/address/AddShippingAddress.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/address/Address.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/address/ShippingAddressScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/cart/Cart.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/cart/CartScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/favorite/Favorite.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/favorite/FavoriteScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/notification/Notification.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/notification/NotifyScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/order/SubmitOrderSuccesScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/order/checkout/CheckoutScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/order/order/Order.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/order/order/OrderDetailScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/order/order/OrderScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/paymentMethod/AddPaymentMethod.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/paymentMethod/PaymentMethod.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/paymentMethod/PaymentMethodScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/product/Category.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/product/Product.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/product/ProductDetailScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/product/ProductScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/product/ProductService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/product/ProductViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/profile/ProfileScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/profile/User.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/profile/UserService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/profile/UserViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/server/db.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/services/RetrofitInstance.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/setting/SettingScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/ui/theme/Color.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/ui/theme/Theme.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/java/thai/ph48495/asm/ui/theme/Type.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/armchair.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/bed.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/bgr_splash.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/bookmark.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/button.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/chair.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/edit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/home.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/ic_launcher_foreground.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/icon_cart.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/icon_search.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/image1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/image2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/imagesuccess.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/img_login.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/img_logout.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/lamp.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/mastercard.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/mastercard2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/notifcation.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/order.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/stars.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/table.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ASM_KOT1041_PH48495/app/src/main/res/drawable/user.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/Home.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/Home.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/Login.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/Login.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/Register.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/activity/Register.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/AddShippingAddress.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/AddShippingAddress.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/Address.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/Address.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/EditAddressScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/EditAddressScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/ShippingAddressScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/address/ShippingAddressScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/cart/Cart.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/cart/Cart.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/cart/CartScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/cart/CartScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/favorite/Favorite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/favorite/Favorite.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/favorite/FavoriteScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/favorite/FavoriteScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/notification/Notify.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/notification/Notify.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/notification/NotifyScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/notification/NotifyScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/checkout/CheckoutScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/checkout/CheckoutScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/order/Order.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/order/Order.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/order/OrderDetailScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/order/OrderDetailScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/order/OrderScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/order/order/OrderScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/AddPaymentMethod.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/AddPaymentMethod.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/PaymentMethod.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/PaymentMethod.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/PaymentMethodScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/paymentMethod/PaymentMethodScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/Product.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/Product.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/ProductDetailScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/ProductDetailScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/ProductScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/product/ProductScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/profile/ProfileScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/profile/ProfileScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/profile/User.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/thai/phph48495/asm/profile/User.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Lab5/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab5/.idea/gradle.xml" afterDir="false" />
-    </list>
+    <list default="true" id="304911f2-7a22-49d3-b0ba-c140f73eed53" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -164,20 +50,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Android App.App.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Android App.App.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="thai.phph48495.asm.product" />
