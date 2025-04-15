@@ -114,7 +114,6 @@ class CartViewModel: ViewModel() {
                     // Làm mới giỏ hàng
                     getCartsByUserId(userId)
                 } else {
-                    // Đơn giản chỉ cập nhật số lượng nếu không tìm thấy cart trong bộ nhớ cache
                     val updateRequest = UpdateCartQuantityRequest(quantity)
                     cartService.updateCartQuantity(cartId, updateRequest)
 
