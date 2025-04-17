@@ -1,0 +1,16 @@
+{
+  "dogs": [
+    {
+      "description": "Chó Phú Quốc là một giống chó bản địa của Việt Nam, được biết đến với khả năng săn bắt và bảo vệ tài sản. Chúng có bộ lông ngắn, màu sắc đa dạng và thường rất thông minh, trung thành.",
+      "id": "1",
+      "image": "https://laputafarm.com/wp-content/uploads/2023/06/Cho-Phu-Quoc.jpg",
+      "name": "Chó Phú Quốc New"
+    },
+    {
+      "description": "Chó Hmong là giống chó bản địa của người H'Mông, thường được nuôi để bảo vệ gia súc. Chúng có bộ lông dày, màu sắc đa dạng và rất trung thành với chủ. 232323232",
+      "id": "3",
+      "image": "https://thucanhviet.com/wp-content/uploads/2020/02/Cho-HMong-Coc-do-nau.jpg",
+      "name": "Chó Hmong 2"
+    }
+  ]
+}
